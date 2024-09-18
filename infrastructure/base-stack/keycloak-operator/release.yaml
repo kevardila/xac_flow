@@ -338,6 +338,7 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
+        readOnlyRootFilesystem: true
       containers:
         - env:
             - name: KUBERNETES_NAMESPACE
