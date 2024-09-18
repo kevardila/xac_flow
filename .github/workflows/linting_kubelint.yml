@@ -4,7 +4,7 @@ on:
   # Note that both `push` and `pull_request` triggers should be present for GitHub to consistently present kube-linter
   # SARIF reports.
   push:
-    branches: [ main, master, development ]
+    branches: [ x ]
   pull_request:
 
 jobs:
@@ -34,11 +34,6 @@ jobs:
         # The following line prevents aborting the workflow immediately in case your files fail kube-linter checks.
         # This allows the following upload-sarif action to still upload the results to your GitHub repo.
         continue-on-error: true
-
-      - name: check SARIF file creation
-        run: |
-          cd results
-          ls
 
       - name: Upload SARIF report files to GitHub
         uses: github/codeql-action/upload-sarif@v3
