@@ -1,0 +1,36 @@
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: opentelemetry-operator
+  namespace: tracing
+spec:
+  releaseName: opentelemetry-operator
+  chart:
+    spec:
+      chart: opentelemetry-operator
+      sourceRef:
+        kind: HelmRepository
+        name: opentelemetry
+        namespace: flux-system
+  timeout: 10m
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+  interval: 24h0m0s
+  values:
+    ## Provide OpenTelemetry Operator manager container image and resources.
+    manager:
+      collectorImage:
+        repository: "otel/opentelemetry-collector-k8s"
+    ## TLS Certificate Option 2: Use Helm to automatically generate self-signed certificate.
+    ## certManager must be disabled and autoGenerateCert must be enabled.
+    ## If true and certManager.enabled is false, Helm will automatically create a self-signed cert and secret for you.
+    admissionWebhooks:
+      autoGenerateCert:
+        enabled: true
+      certManager:
+        enabled: false

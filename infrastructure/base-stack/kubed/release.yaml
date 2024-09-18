@@ -1,0 +1,26 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kubed
+spec:
+  releaseName: kubed
+  chart:
+    spec:
+      chart: kubed
+      sourceRef:
+        kind: HelmRepository
+        name: appscode
+        namespace: flux-system
+      version: "0.13.2"
+  interval: 12h0m0s
+  install:
+    remediation:
+      retries: -1
+  values:
+    enableAnalytics: false
+    config:
+      clusterName: devops
+    operator:
+      registry: appscodeci
+      repository: kubed
+      tag: v0.13.2_linux_amd64

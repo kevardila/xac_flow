@@ -1,0 +1,65 @@
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: opentelemetry-collector
+  namespace: tracing
+spec:
+  releaseName: otel-collector
+  chart:
+    spec:
+      chart: opentelemetry-collector
+      sourceRef:
+        kind: HelmRepository
+        name: opentelemetry
+        namespace: flux-system
+  timeout: 10m
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+  interval: 24h0m0s
+  values:
+    mode: deployment
+
+    image:
+      repository: otel/opentelemetry-collector-k8s
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+
+    # We only want one of these collectors - any more and we'd produce duplicate data
+    replicaCount: 1
+
+    presets:
+      # enables the k8sclusterreceiver and adds it to the metrics pipelines
+      clusterMetrics:
+        enabled: false
+      # enables the k8sobjectsreceiver to collect events only and adds it to the logs pipelines
+      kubernetesEvents:
+        enabled: false
+    ## The chart only includes the loggingexporter by default
+    ## If you want to send your data somewhere you need to
+    ## configure an exporter, such as the otlpexporter
+    # config:
+    config:
+      exporters:
+        otlp:
+          endpoint: http://tempo-distributor.tracing:4317
+          tls:
+            insecure: true
+      service:
+        pipelines:
+          traces:
+            exporters: [ otlp ]
+    #     metrics:
+    #       exporters: [ otlp ]
+    #     logs:
+    #       exporters: [ loki ]
+
