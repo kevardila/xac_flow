@@ -22,5 +22,5 @@ jobs:
       - name: Validate manifests
         run: |
           cd scripts
-          validate.sh
+          ./validate.sh
         shell: bash
