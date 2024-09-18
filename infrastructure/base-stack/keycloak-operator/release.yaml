@@ -336,9 +336,6 @@ spec:
         app.kubernetes.io/name: keycloak-operator
         app.kubernetes.io/version: 23.0.3
     spec:
-      securityContext:
-        readOnlyRootFilesystem: true
-        runAsNonRoot: true
       containers:
         - env:
             - name: KUBERNETES_NAMESPACE
@@ -367,6 +364,9 @@ spec:
             successThreshold: 1
             timeoutSeconds: 10
           name: keycloak-operator
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
           ports:
             - containerPort: 8080
               name: http
