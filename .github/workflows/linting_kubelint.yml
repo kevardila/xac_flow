@@ -16,14 +16,16 @@ jobs:
       # This prepares directory where github/codeql-action/upload-sarif@v1 looks up report files by default.
       - name: Create ../results directory for SARIF report files
         shell: bash
-        run: mkdir -p ../results
+        run: |
+          mkdir -p /results
+          tree .
 
       - name: Scan yaml files with kube-linter
         uses: stackrox/kube-linter-action@v1.0.5
         id: kube-linter-action-scan
         with:
           # Adjust this directory to the location where your kubernetes resources and helm charts are located.
-          directory: /
+          directory: ./
           # Adjust this to the location of kube-linter config you're using, or remove the setting if you'd like to use
           # the default config.
           # The following two settings make kube-linter produce scan analysis in SARIF format which would then be
