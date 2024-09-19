@@ -3,7 +3,7 @@ name: e2e
 on:
   workflow_dispatch:
   push:
-    branches: [ 'x' ]
+    branches: [ 'main' ]
     tags-ignore: [ 'x' ]
 
 jobs:
@@ -27,14 +27,29 @@ jobs:
           --branch=${GITHUB_REF#refs/heads/} \
           --username=${GITHUB_ACTOR} \
           --password=${{ secrets.GITHUB_TOKEN }} \
-          --ignore-paths="clusters/**/flux-system/"
+          --verbose
+          flux get all
+          kubectl get gitrepository/flux-system -o yaml -n flux-system
+#          kubectl create ns preprod
+      - name: create kustom
+        continue-on-error: true
+        run: |
+          tree
           flux create kustomization flux-system \
           --source=flux-system \
-          --path=./clusters/staging
+          --path=./bases \
+          --timeout=1m \
+          --verbose
+
+      - name: verify
+        run: |
+          flux get all
+
       - name: Verify cluster reconciliation
         run: |
-          kubectl -n flux-system wait kustomization/infra-controllers --for=condition=ready --timeout=5m
-          kubectl -n flux-system wait kustomization/apps --for=condition=ready --timeout=5m
+          tree
+          kubectl -n flux-system wait kustomization/flux-system --for=condition=ready --timeout=5m
+#          kubectl -n flux-system wait kustomization/apps --for=condition=ready --timeout=5m
       - name: Verify helm reconciliation
         run: |
           kubectl -n podinfo wait helmrelease/podinfo --for=condition=ready --timeout=5m
