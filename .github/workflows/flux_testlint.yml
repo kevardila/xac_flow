@@ -27,10 +27,13 @@ jobs:
           --branch=${GITHUB_REF#refs/heads/} \
           --username=${GITHUB_ACTOR} \
           --password=${{ secrets.GITHUB_TOKEN }} \
-          --ignore-paths="clusters/**/flux-system/"
+
+      - name: create kustom
+        run: |
           flux create kustomization flux-system \
           --source=flux-system \
-          --path=./clusters/staging
+          --path=./overlays/preprod/
+          ls -la
       - name: Verify cluster reconciliation
         run: |
           kubectl -n flux-system wait kustomization/infra-controllers --for=condition=ready --timeout=5m

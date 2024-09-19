@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poc-nodejs-deployment
+  namespace: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-nodejs
+  template:
+    metadata:
+      labels:
+        app: app-nodejs
+    spec:
+      containers:
+      - name: bus-app-nodejs-flux
+        image: nginx:latest #registry.nuamexchange.com/test-devops/node-artifact:6.7.0 # {"$imagepolicy":"flux-system:node-policy"}
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-nodejs-service
+  namespace: production
+spec:
+  selector:
+    app: app-nodejs
+  ports:
+    - protocol: TCP
+      port: 3020
+      targetPort: 3020
+  type: ClusterIP
