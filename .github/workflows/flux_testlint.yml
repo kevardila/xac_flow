@@ -3,7 +3,7 @@ name: e2e
 on:
   workflow_dispatch:
   push:
-    branches: [ 'x' ]
+    branches: [ 'main' ]
     tags-ignore: [ 'x' ]
 
 jobs:
