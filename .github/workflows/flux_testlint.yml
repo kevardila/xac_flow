@@ -37,19 +37,19 @@ jobs:
           tree
           flux create kustomization flux-system \
           --source=flux-system \
-          --path=./overlays/preprod \
+          --path=./bases \
           --timeout=1m \
           --verbose
 
       - name: verify
         run: |
           flux get all
-          
+
       - name: Verify cluster reconciliation
         run: |
           tree
-          kubectl -n flux-system wait kustomization/infra-controllers --for=condition=ready --timeout=5m
-          kubectl -n flux-system wait kustomization/apps --for=condition=ready --timeout=5m
+          kubectl -n flux-system wait kustomization/flux-system --for=condition=ready --timeout=5m
+#          kubectl -n flux-system wait kustomization/apps --for=condition=ready --timeout=5m
       - name: Verify helm reconciliation
         run: |
           kubectl -n podinfo wait helmrelease/podinfo --for=condition=ready --timeout=5m
