@@ -6,7 +6,7 @@ on:
       - closed
     branches:
       - main
-  
+#
 jobs:
   versioning:
     uses: bvcco/lab_devops_templates/.github/workflows/CI-versioning-XaC.yml@feat/ARQPD-1230
