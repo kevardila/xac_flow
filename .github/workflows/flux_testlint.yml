@@ -30,12 +30,13 @@ jobs:
           --verbose
           flux get all
           kubectl get gitrepository/flux-system -o yaml -n flux-system
+          kubectl create ns preprod
       - name: create kustom
         run: |
           tree
           flux create kustomization flux-system \
           --source=flux-system \
-          --path=./env/testing
+          --path=./overlays/preprod
       - name: Verify cluster reconciliation
         run: |
           tree
