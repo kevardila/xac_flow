@@ -37,7 +37,7 @@ jobs:
           flux create kustomization flux-system \
           --source=flux-system \
           --path=./overlays/preprod \
-          --timeout=1m\
+          --timeout=1m \
           --verbose
           flux get all
       - name: Verify cluster reconciliation
