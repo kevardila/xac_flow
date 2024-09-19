@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: poc-nodejs-deployment
-  namespace: production
+  namespace: flux-system
 spec:
   replicas: 3
   selector:
@@ -23,7 +23,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app-nodejs-service
-  namespace: production
+  namespace: flux-system
 spec:
   selector:
     app: app-nodejs
