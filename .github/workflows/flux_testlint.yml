@@ -29,6 +29,7 @@ jobs:
           --password=${{ secrets.GITHUB_TOKEN }} \
           --verbose
           flux get all
+          kubectl get gitrepository/flux-system -o yaml -n flux-system
       - name: create kustom
         run: |
           tree
