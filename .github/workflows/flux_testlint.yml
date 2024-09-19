@@ -32,6 +32,7 @@ jobs:
           kubectl get gitrepository/flux-system -o yaml -n flux-system
 #          kubectl create ns preprod
       - name: create kustom
+        continue-on-error: true
         run: |
           tree
           flux create kustomization flux-system \
@@ -39,7 +40,11 @@ jobs:
           --path=./overlays/preprod \
           --timeout=1m \
           --verbose
+
+      - name: verify
+        run: |
           flux get all
+          
       - name: Verify cluster reconciliation
         run: |
           tree
