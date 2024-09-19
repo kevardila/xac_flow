@@ -28,6 +28,7 @@ jobs:
           --username=${GITHUB_ACTOR} \
           --password=${{ secrets.GITHUB_TOKEN }} \
           --verbose
+          flux get all
       - name: create kustom
         run: |
           tree
