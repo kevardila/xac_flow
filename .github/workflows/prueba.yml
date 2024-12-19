@@ -8,9 +8,12 @@ jobs:
     # You need to use the INSTALLATION_NAME from the previous step
     runs-on: self-hosted
     steps:
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin' # See 'Supported distributions' for available options
+        java-version: '17'
+        
     - run: echo "🎉 This job uses runner scale set runners!"
-
-    - run: mkdir pruebafolder
 
     - run: docker ps
 
