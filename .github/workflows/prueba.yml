@@ -20,4 +20,4 @@ jobs:
     - name: delete
       run: |
         cd /home/kevardila/actions-runner/_work
-        rm -rf *
+        # rm -rf *
