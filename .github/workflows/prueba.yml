@@ -11,3 +11,8 @@ jobs:
     - run: echo "🎉 This job uses runner scale set runners!"
 
     - run: mkdir pruebafolder
+
+    - name: delete
+      run: |
+        cd /home/kevardila/actions-runner/_work
+        rm -rf *
