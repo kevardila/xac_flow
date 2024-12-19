@@ -12,6 +12,8 @@ jobs:
 
     - run: mkdir pruebafolder
 
+    - run: docker ps
+
     - name: delete
       run: |
         cd /home/kevardila/actions-runner/_work
