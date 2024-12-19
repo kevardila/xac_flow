@@ -17,7 +17,10 @@ jobs:
 
     - run: docker ps
 
-    - name: delete
-      run: |
-        cd /home/kevardila/actions-runner/_work
-        # rm -rf *
+  clean-shr:
+    runs-on: self-hosted
+    steps:
+      - name: delete
+        run: |
+          cd /home/kevardila/actions-runner/_work
+          rm -rf *
